@@ -159,3 +159,13 @@ TEST(StackTemplate, pop_correct_top)
     expectedTopIndex--;
   }
 }
+
+TEST(StackTemplate, clean_full_stack)
+{
+  IntStack stack;
+  for(int i = 0; i < TEST_STACK_SIZE; i++) {
+    stack.push(i);
+  }
+  stack.clean();
+  ASSERT_TRUE(stack.isEmpty());
+}

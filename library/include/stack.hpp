@@ -66,6 +66,11 @@ public:
     return m_stackTopIndex + 1;
   }
   
+  void clean()
+  {
+    m_stackTopIndex = EMPTY_STACK_TOP_INDEX;
+    memset(m_stack, 0, sizeof(T) * STACK_MAXIMUM_SIZE);
+  }
 protected:
   int const FULL_STACK_TOP_INDEX = STACK_MAXIMUM_SIZE - 1;
   int const EMPTY_STACK_TOP_INDEX = -1;
