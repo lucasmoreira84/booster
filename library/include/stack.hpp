@@ -14,10 +14,10 @@ public:
     memset(m_stack, 0, sizeof(T) * STACK_MAXIMUM_SIZE);
   }
 
-  void push(T const & newElement)
+  void push(T const& newElement)
   {
     if (m_stackTopIndex < FULL_STACK_TOP_INDEX) {
-      m_stack[m_stackTopIndex++] = newElement;
+      m_stack[++m_stackTopIndex] = newElement;
     }
     else {
       throw std::exception();
@@ -33,7 +33,7 @@ public:
 
   T & getTop()
   {
-    if (!isEmpty) {
+    if (!isEmpty()) {
       return m_stack[m_stackTopIndex];
     }
     else {
@@ -41,17 +41,27 @@ public:
     }
   }
 
-  bool isEmpty()
+  T const& getTop() const
+  {
+    if (!isEmpty()) {
+      return m_stack[m_stackTopIndex];
+    }
+    else {
+      throw std::exception();
+    }
+  }
+
+  bool isEmpty() const
   {
     return m_stackTopIndex == EMPTY_STACK_TOP_INDEX;
   }
 
-  bool isFull()
+  bool isFull() const
   {
     return m_stackTopIndex == FULL_STACK_TOP_INDEX;
   }
 
-  int getSize()
+  int getSize() const
   {
     return m_stackTopIndex + 1;
   }
