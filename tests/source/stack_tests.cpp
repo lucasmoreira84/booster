@@ -129,32 +129,18 @@ TEST(StackTemplate, getTop_non_empty_stack)
   }
 }
 
-TEST(StackTemplate, pop_exception_empty_stack)
-{
-  IntStack stack;
-
-  ASSERT_ANY_THROW(stack.pop());
-}
-
-TEST(StackTemplate, pop_no_exception_non_empty_stack)
-{
-  IntStack stack;
-  stack.push(15);
-  ASSERT_NO_THROW(stack.pop());
-}
-
 TEST(StackTemplate, pop_correct_size)
 {
   IntStack stack;
   for(int i = 0; i < TEST_STACK_SIZE; i++) {
-    stack.push(i););
+    stack.push(i);
   }
   int expectedSize = TEST_STACK_SIZE;
-  EXPECT_EQ(expectedSize, stack.getTop());
+  EXPECT_EQ(expectedSize, stack.getSize());
   for(int i = 0; i < TEST_STACK_SIZE; i++) {
     stack.pop();
     expectedSize--;
-    ASSERT_EQ(expectedSize, stack.getTop());
+    ASSERT_EQ(expectedSize, stack.getSize());
   }
 }
 
@@ -163,12 +149,13 @@ TEST(StackTemplate, pop_correct_top)
   IntStack stack;
   int valuesToPush[TEST_STACK_SIZE] = {10, 20, 30, 40, 55};
   for(int i = 0; i < TEST_STACK_SIZE; i++) {
-    stack.push(valuesToPush[i]););
+    stack.push(valuesToPush[i]);
   }
 
+  int expectedTopIndex = TEST_STACK_SIZE - 1;
   for(int i = 0; i < TEST_STACK_SIZE; i++) {
-    stack.pop();
-    int expectedTopIndex = TEST_STACK_SIZE - (i + 1);
     ASSERT_EQ(valuesToPush[expectedTopIndex], stack.getTop());
+    stack.pop();
+    expectedTopIndex--;
   }
 }
