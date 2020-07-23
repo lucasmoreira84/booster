@@ -1,7 +1,7 @@
 #include<exception>
 
-#ifndef _STACK_HPP_
-#define _STACK_HPP_
+#ifndef _STACK_TEMPLATE_HPP_
+#define _STACK_TEMPLATE_HPP_
 namespace booster{
 template<class T, int STACK_MAXIMUM_SIZE>
 class StackTemplate
@@ -64,6 +64,11 @@ public:
   int getSize() const
   {
     return m_stackTopIndex + 1;
+  }
+
+  int getAvailableStackPositions() const
+  {
+    return MAXIMUM_SIZE - m_stackTopIndex - 1;
   }
   
   void clean()

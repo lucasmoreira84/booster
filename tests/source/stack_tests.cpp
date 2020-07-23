@@ -1,5 +1,5 @@
 #include<gtest/gtest.h>
-#include<stack.hpp>
+#include<stack_template.hpp>
 
 int const TEST_STACK_SIZE = 5;
 typedef booster::StackTemplate<int, TEST_STACK_SIZE> IntStack;
@@ -168,4 +168,23 @@ TEST(StackTemplate, clean_full_stack)
   }
   stack.clean();
   ASSERT_TRUE(stack.isEmpty());
+}
+
+TEST(StackTemplate, getSize_full_stack)
+{
+  IntStack stack;
+  for(int i = 0; i < TEST_STACK_SIZE; i++) {
+    stack.push(i);
+    ASSERT_EQ(i + 1, stack.getSize());
+  }
+}
+
+TEST(StackTemplate, getAvailableStackPositions_full_stack)
+{
+  IntStack stack;
+  for(int i = 0; i < TEST_STACK_SIZE; i++) {
+    stack.push(i);
+    int expectedAvailableStackSize = TEST_STACK_SIZE - i - 1;
+    ASSERT_EQ(expectedAvailableStackSize, stack.getAvailableStackPositions());
+  }
 }

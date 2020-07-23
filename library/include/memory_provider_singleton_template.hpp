@@ -2,7 +2,7 @@
 #define _MEMORY_PROVIDER_SINGLETON_TEMPLATE_
 
 #include <memory>
-#include <stack.hpp>
+#include <stack_template.hpp>
 
 using namespace std;
 
@@ -20,7 +20,7 @@ public:
   shared_ptr<T> getNewMemoryPosition() {
     int availablePositionIndex = m_availableIndicesStack.getTop();
     m_availableIndicesStack.pop();
-    m_memoryPositions[availablePositionIndex] = DealocationController(availablePositionIndex);
+    m_memoryPositions[availablePositionIndex] = MemoryPosition(availablePositionIndex);
     return static_cast<shared_ptr<T>>(&(m_memoryPositions[availablePositionIndex]));
   }
 
@@ -28,11 +28,15 @@ public:
   {
     memset(m_memoryPositions, 0, sizeof(T) * NUMBER_OF_MEMORY_POSITIONS);
     m_availableIndicesStack.clean();
+    for(int i = NUMBER_OF_MEMORY_POSITIONS - 1; i >=0; i--) {
+      m_availableIndicesStack.push(i);
+    }
   }
 
   int getNumberOfAvailablePositions() { return m_availableIndicesStack.getSize(); }
 
-protected:
+private:
+
   MemoryProviderSingletonTemplate()
   : m_memoryPositions()
   , m_availableIndicesStack()
@@ -40,30 +44,29 @@ protected:
     clean();
   }
 
-  class DealocationController : public T
-  {
-  public:
-    DealocationController() = default;
-    DealocationController(int newIndex, void (*freePosition)(int))
-    : index(newIndex)
-    , freePosition(freePosition)
-    {}
-
-    void operator delete(void * p)
-    {
-      static_cast<DealocationController *>(p)->freePosition(static_cast<DealocationController *>(p)->index);
-    }
-    
-private:
-    int index;
-    void (*freePosition)(int);
-  };
-
   void freePosition(int index) {
     m_availableIndicesStack.push(index);
   }
 
-  DealocationController m_memoryPositions[NUMBER_OF_MEMORY_POSITIONS];
+  friend class Dealocator;
+
+  struct MemoryPosition : public T
+  {
+    MemoryPosition() = default;
+    MemoryPosition(int newIndex)
+    : index(newIndex)
+    {}
+
+    void operator delete(void * p)
+    {
+      MemoryPosition * memoryPosition = static_cast<MemoryPosition *>(p);
+      MemoryProviderSingletonTemplate<T, NUMBER_OF_MEMORY_POSITIONS>::GetMemoryProviderInstance().freePosition(memoryPosition->index);
+    }
+    
+    int index;
+  };
+
+  MemoryPosition m_memoryPositions[NUMBER_OF_MEMORY_POSITIONS];
   StackTemplate<int, NUMBER_OF_MEMORY_POSITIONS> m_availableIndicesStack;
 };
 }
