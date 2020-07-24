@@ -10,7 +10,7 @@ This repository was started with the objective of holding a library that provide
 
 #### Responsibility
 
-This class provides a stack template that can be specialized to wichever class desired. It also allows for defining the maximum size of the stack at compilation time.
+This class provides a stack template that can be specialized to whichever class desired. It also allows for defining the maximum size of the stack at compilation time.
 
 ### MemoryProviderSingletonTemplate
 
@@ -18,4 +18,4 @@ This class provides a stack template that can be specialized to wichever class d
 
 This class is responsible for providing a dynamic allocation abstraction using static allocation underneath. By specializing MemoryProviderSingletonTemplate, it's possible to determine the maximum amount of memory positions it's going to provide and the class that those memory positions are going to hold.
 
-All memory positions returned by the MemoryProviderSingletonTemplate are provided as shared pointers. The dealocation behavior of these shared pointers is overloaded to instead of dealocating the memory space, just making it available again through this class.
+All memory positions returned by the MemoryProviderSingletonTemplate are provided as shared pointers. The dealocation behavior of these shared pointers is overloaded to, instead of dealocating the memory space, just making it available again through this class.
