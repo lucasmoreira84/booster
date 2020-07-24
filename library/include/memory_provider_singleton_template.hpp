@@ -18,10 +18,14 @@ public:
   }
   
   shared_ptr<T> getNewMemoryPosition() {
-    int availablePositionIndex = m_availableIndicesStack.getTop();
-    m_availableIndicesStack.pop();
-    m_memoryPositions[availablePositionIndex] = MemoryPosition(availablePositionIndex);
-    return static_cast<shared_ptr<T>>(&(m_memoryPositions[availablePositionIndex]));
+    shared_ptr<T> newMemoryPosition{nullptr};
+    if (!m_availableIndicesStack.isEmpty()) {
+      int availablePositionIndex = m_availableIndicesStack.getTop();
+      m_availableIndicesStack.pop();
+      m_memoryPositions[availablePositionIndex] = MemoryPosition(availablePositionIndex);
+      newMemoryPosition = static_cast<shared_ptr<T>>(&(m_memoryPositions[availablePositionIndex]));
+    }
+    return newMemoryPosition;
   }
 
   void clean()

@@ -46,7 +46,7 @@ TEST(MemoryProviderSingletonTemplate, getNewMemoryPosition_until_memory_full)
   for (int i = 0; i < TEST_MEMORY_PROVIDER_SIZE; i++) {
     placeHolderPointerList[i] = memoryProvider.getNewMemoryPosition();
   }
-  ASSERT_EQ(0, memoryProvider.getNumberOfAvailablePositions());
+  EXPECT_EQ(0, memoryProvider.getNumberOfAvailablePositions());
 
   for (int i = 0; i < TEST_MEMORY_PROVIDER_SIZE; i++) {
     for(int j = 0; j < TEST_MEMORY_PROVIDER_SIZE; j++) {
@@ -55,6 +55,21 @@ TEST(MemoryProviderSingletonTemplate, getNewMemoryPosition_until_memory_full)
       }
     }
   }
+}
+
+TEST(MemoryProviderSingletonTemplate, getNewMemoryPosition_after_memory_full)
+{
+  PlaceholderMemoryProvider & memoryProvider = PlaceholderMemoryProvider::GetMemoryProviderInstance();
+  memoryProvider.clean();
+  
+  shared_ptr<Placeholder> placeHolderPointerList[TEST_MEMORY_PROVIDER_SIZE];
+  for (int i = 0; i < TEST_MEMORY_PROVIDER_SIZE; i++) {
+    placeHolderPointerList[i] = memoryProvider.getNewMemoryPosition();
+  }
+  EXPECT_EQ(0, memoryProvider.getNumberOfAvailablePositions());
+
+  shared_ptr<Placeholder> newMemoryPosition = memoryProvider.getNewMemoryPosition();
+  ASSERT_EQ(nullptr, newMemoryPosition);
 }
 
 TEST(MemoryProviderSingletonTemplate, test_dealocation_after_out_of_scope)
