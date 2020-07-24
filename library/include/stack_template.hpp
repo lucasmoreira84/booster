@@ -20,7 +20,7 @@ public:
       m_stack[++m_stackTopIndex] = newElement;
     }
     else {
-      throw std::exception();
+      throw std::runtime_error("StackTemplate out of space");
     }
   }
 
@@ -37,7 +37,7 @@ public:
       return m_stack[m_stackTopIndex];
     }
     else {
-      throw std::exception();
+      throw std::runtime_error("StackTemplate is empty");
     }
   }
 
@@ -47,7 +47,7 @@ public:
       return m_stack[m_stackTopIndex];
     }
     else {
-      throw std::exception();
+      throw std::runtime_error("StackTemplate is empty");
     }
   }
 
